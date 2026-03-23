@@ -6,7 +6,7 @@ author:
       - ""
 date: "2026-03-23"
 abstract: |
-  High‑resolution reconstruction of microbial genomes from metagenomic data is critical for elucidating community structure, metabolic potential, and ecological interactions, yet short‑read approaches often fragment assemblies across repetitive regions, hindering accurate binning of metagenome‑assembled genomes (MAGs) (Lei et al., 2021). To address this limitation, we employed Oxford Nanopore Technologies (ONT) long‑read sequencing to recover microbial genomes from the publicly available dataset BioProject PRJNA1248896. Raw ONT reads were downloaded from the Sequence Read Archive using fasterq‑dump (SRA Toolkit v3.0.0) without prior size or quality filtering, relying on the nanopore_mag workflow to perform internal read correction and error filtering during assembly (Niehues et al., 2024). The resulting assembly comprised 3,293 contigs with a cumulative length of 29.63 Mb, an N50 of 13.8 kb, a maximum contig length of 179.7 kb, and a mean sequencing depth of 13.7×; 58 contigs were identified as circular, indicating potential complete replicons [ref3]. Annotation with Bakta predicted 53,151 coding sequences and 169 tRNA loci, while ribosomal RNA genes were not detected in the current output [ref2]. These findings demonstrate that ONT long reads can generate substantial genomic information for complex metagenomes, yielding numerous near‑complete coding regions and putative circular elements despite overall assembly fragmentation. The absence of rRNA signals suggests gaps that may be resolved with additional long‑range data or refined binning strategies, highlighting the promise of long‑read approaches for improving MAG recovery and functional characterization in microbial ecology studies [ref1].
+  High‑resolution reconstruction of microbial genomes from metagenomic data is critical for elucidating community structure, metabolic potential, and ecological interactions, yet short‑read approaches often fragment assemblies across repetitive regions, hindering accurate binning of metagenome‑assembled genomes (MAGs) (Lei et al., 2021). To address this limitation, we employed Oxford Nanopore Technologies (ONT) long‑read sequencing to recover microbial genomes from the publicly available dataset BioProject PRJNA1248896. Raw ONT reads were downloaded from the Sequence Read Archive using fasterq‑dump (SRA Toolkit v3.0.0) without prior size or quality filtering, relying on the nanopore\_mag workflow to perform internal read correction and error filtering during assembly (Niehues et al., 2024). The resulting assembly comprised 3,293 contigs with a cumulative length of 29.63 Mb, an N50 of 13.8 kb, a maximum contig length of 179.7 kb, and a mean sequencing depth of 13.7×; 58 contigs were identified as circular, indicating potential complete replicons [ref3]. Annotation with Bakta predicted 53,151 coding sequences and 169 tRNA loci, while ribosomal RNA genes were not detected in the current output [ref2]. These findings demonstrate that ONT long reads can generate substantial genomic information for complex metagenomes, yielding numerous near‑complete coding regions and putative circular elements despite overall assembly fragmentation. The absence of rRNA signals suggests gaps that may be resolved with additional long‑range data or refined binning strategies, highlighting the promise of long‑read approaches for improving MAG recovery and functional characterization in microbial ecology studies [ref1].
 keywords:
   - microbial ecology
   - metagenomics
@@ -25,57 +25,57 @@ High‑resolution reconstruction of microbial genomes from metagenomic data is e
 
 Despite the theoretical advantages of long‑read data, realizing their full potential requires bioinformatics pipelines that can accommodate the distinct error profiles and read‑length distributions inherent to Nanopore sequences. Variability in sequencing chemistry can affect downstream binning accuracy, necessitating tailored assembly and binning strategies to maximize genome completeness while minimizing contamination (Abunahel et al., 2021). We therefore hypothesize that employing optimized assembly and binning protocols specifically designed for ONT data will significantly enhance MAG completeness and reduce contamination relative to conventional short‑read approaches, and that this improved genomic resolution will facilitate more precise taxonomic assignments and reveal niche‑specific adaptations within the studied community [ref45].  
 
-To test this hypothesis, we analyzed public metagenomic datasets from BioProject **PRJNA1248896** (run accessions **SRR123** and **SRR456**) using the **nanopore_mag** pipeline, which integrates long‑read assembly, consensus binning, and quality‑filtering steps (Shen et al., 2018). This study presents a comprehensive assessment of genome quality metrics, taxonomic distributions, and functional annotations derived from these ONT‑based MAGs, and benchmarks the results against established standards to demonstrate the utility of ONT‑focused workflows for high‑resolution microbial ecology.
+To test this hypothesis, we analyzed public metagenomic datasets from BioProject **PRJNA1248896** (run accessions **SRR123** and **SRR456**) using the **nanopore\_mag** pipeline, which integrates long‑read assembly, consensus binning, and quality‑filtering steps (Shen et al., 2018). This study presents a comprehensive assessment of genome quality metrics, taxonomic distributions, and functional annotations derived from these ONT‑based MAGs, and benchmarks the results against established standards to demonstrate the utility of ONT‑focused workflows for high‑resolution microbial ecology.
 
 ## Methods
 
 **Methods**  
 
 **1. Data acquisition**  
-Raw Oxford Nanopore Technologies (ONT) long‑read data associated with BioProject **PRJNA1248896** were downloaded from the Sequence Read Archive (SRA) using the *fasterq-dump* tool (SRA Toolkit v3.0.0) [ref43]. All reads were retained for downstream processing; no size‑ or quality‑based filtering was applied prior to assembly, as the nanopore_mag workflow performs internal read correction and filtering during assembly.
+Raw Oxford Nanopore Technologies (ONT) long‑read data associated with BioProject **PRJNA1248896** were downloaded from the Sequence Read Archive (SRA) using the *fasterq-dump* tool (SRA Toolkit v3.0.0) [ref43]. All reads were retained for downstream processing; no size‑ or quality‑based filtering was applied prior to assembly, as the nanopore\_mag workflow performs internal read correction and filtering during assembly.
 
 **2. Sequence processing pipeline**  
-The analysis was performed with the **nanopore_mag** pipeline (v1.2.0) [ref42], which integrates a suite of best‑practice tools for metagenome‑assembled genome (MAG) reconstruction from ONT data. The major steps, executed in the order listed in the pipeline output, were:
+The analysis was performed with the **nanopore\_mag** pipeline (v1.2.0) [ref42], which integrates a suite of best‑practice tools for metagenome‑assembled genome (MAG) reconstruction from ONT data. The major steps, executed in the order listed in the pipeline output, were:
 
 | Step | Tool (version) | Purpose |
 |------|----------------|---------|
-| FLYE_ASSEMBLE | Flye v2.9.1 [ref41] | De‑novo assembly of corrected ONT reads into contigs |
-| FLYE_FINISH | Flye polishing round | Improves assembly consensus using raw reads |
-| CALCULATE_TNF | Custom script | Computes tetranucleotide frequencies for binning |
-| MAP_READS | minimap2 v2.24 [ref40] | Maps reads back to assembly for coverage calculation |
-| BAKTA_BASIC | Bakta v1.8.2 [ref39] | Initial structural annotation (CDS, rRNA, tRNA) |
-| TIARA_CLASSIFY | TIARA v1.3.0 (Goh et al., 2019) | Taxonomic classification of contigs |
-| RNA_CLASSIFY | barrnap v0.9 (Millman et al., 2022) + Infernal v1.1.4 [ref36] | rRNA gene detection and classification |
-| BIN_COMEBIN | ComeBin v0.5.0 (Georjon et al., 2023) | Co‑assembly binning using differential coverage and TNF |
-| CALCULATE_DEPTHS | jgi_summarize_bam_contig_depths (MetaBat2) | Generates depth profiles for each bin |
-| BIN_SEMIBIN2 | SemiBin2 v0.2.5 [ref34] | Deep‑learning based binning |
-| BIN_LORBIN | LorBin v0.4.0 [ref33] | Long‑read aware binning |
-| BIN_VAMB | VAMB v3.0.2 [ref32] | Variational auto‑encoder binning |
-| BIN_MAXBIN2 | MaxBin2 v2.2.7 [ref31] | Expectation‑maximization binning |
-| BIN_METABAT2 | MetaBat2 v2.15 [ref30] | Probabilistic binning |
-| BAKTA_EXTRA | Bakta v1.8.2 | Functional annotation of binned contigs |
+| FLYE\_ASSEMBLE | Flye v2.9.1 [ref41] | De‑novo assembly of corrected ONT reads into contigs |
+| FLYE\_FINISH | Flye polishing round | Improves assembly consensus using raw reads |
+| CALCULATE\_TNF | Custom script | Computes tetranucleotide frequencies for binning |
+| MAP\_READS | minimap2 v2.24 [ref40] | Maps reads back to assembly for coverage calculation |
+| BAKTA\_BASIC | Bakta v1.8.2 [ref39] | Initial structural annotation (CDS, rRNA, tRNA) |
+| TIARA\_CLASSIFY | TIARA v1.3.0 (Goh et al., 2019) | Taxonomic classification of contigs |
+| RNA\_CLASSIFY | barrnap v0.9 (Millman et al., 2022) + Infernal v1.1.4 [ref36] | rRNA gene detection and classification |
+| BIN\_COMEBIN | ComeBin v0.5.0 (Georjon et al., 2023) | Co‑assembly binning using differential coverage and TNF |
+| CALCULATE\_DEPTHS | jgi\_summarize\_bam\_contig\_depths (MetaBat2) | Generates depth profiles for each bin |
+| BIN\_SEMIBIN2 | SemiBin2 v0.2.5 [ref34] | Deep‑learning based binning |
+| BIN\_LORBIN | LorBin v0.4.0 [ref33] | Long‑read aware binning |
+| BIN\_VAMB | VAMB v3.0.2 [ref32] | Variational auto‑encoder binning |
+| BIN\_MAXBIN2 | MaxBin2 v2.2.7 [ref31] | Expectation‑maximization binning |
+| BIN\_METABAT2 | MetaBat2 v2.15 [ref30] | Probabilistic binning |
+| BAKTA\_EXTRA | Bakta v1.8.2 | Functional annotation of binned contigs |
 | DBCAN | dbCAN2 v1.0.0 [ref29] | Carbohydrate‑active enzyme annotation |
-| WHOKARYOTE_CLASSIFY | WhoKaryote v1.0.0 [ref28] | Eukaryotic contamination screening |
+| WHOKARYOTE\_CLASSIFY | WhoKaryote v1.0.0 [ref28] | Eukaryotic contamination screening |
 | ANTISMASH | antiSMASH v7.0.0 (Clabby et al., 2025) | Biosynthetic gene cluster detection |
 | EMAPPER | eggNOG‑mapper v2.1.10 [ref26] | Orthology‑based functional annotation |
 | KOFAMSCAN | KOFAMSCAN v1.3.0 [ref25] | Profile‑HMM based KEGG Orthology assignment |
-| METAEUK_PREDICT | MetaEuk v2.0 [ref24] | Eukaryotic gene prediction |
-| MARFERRET_CLASSIFY | MarFerret v0.2.0 (Macagno et al., 2024) | Mobile genetic element classification |
-| MERGE_ANNOTATIONS | Custom script | Consolidates annotations from multiple tools |
-| DASTOOL_CONSENSUS | DAS Tool v1.1.2 [ref22] | Creates a non‑redundant MAG set from multiple binning outputs |
-| MAGSCOT_CONSENSUS | MAGSCOT v1.0.0 [ref21] | Refines consensus bins using coverage and taxonomy |
-| MAP_TO_BINS | minimap2 + samtools v1.20 [ref20] | Assigns reads to final MAGs for downstream quantification |
-| KEGG_DECODER | Custom script | Translates KOs to KEGG pathway representation |
+| METAEUK\_PREDICT | MetaEuk v2.0 [ref24] | Eukaryotic gene prediction |
+| MARFERRET\_CLASSIFY | MarFerret v0.2.0 (Macagno et al., 2024) | Mobile genetic element classification |
+| MERGE\_ANNOTATIONS | Custom script | Consolidates annotations from multiple tools |
+| DASTOOL\_CONSENSUS | DAS Tool v1.1.2 [ref22] | Creates a non‑redundant MAG set from multiple binning outputs |
+| MAGSCOT\_CONSENSUS | MAGSCOT v1.0.0 [ref21] | Refines consensus bins using coverage and taxonomy |
+| MAP\_TO\_BINS | minimap2 + samtools v1.20 [ref20] | Assigns reads to final MAGs for downstream quantification |
+| KEGG\_DECODER | Custom script | Translates KOs to KEGG pathway representation |
 | MINPATH | MinPath v1.2 [ref19] | Infers pathway presence/absence from KO profiles |
-| KEGG_MODULES | Custom script | Calculates completeness of KEGG modules |
+| KEGG\_MODULES | Custom script | Calculates completeness of KEGG modules |
 | INTEGRONFINDER | IntegronFinder v2.0.3 [ref18] | Detects integron structures |
-| GENADOM_CLASSIFY | Genomad v1.5.0 [ref17] | Plasmid and virus detection |
-| VIZ_STAGE1‑4 | Custom R/Python scripts | Generates interim and final visualizations |
-| CHECKV_QUALITY | CheckV v1.0.1 [ref16] | Estimates MAG completeness, contamination, and genome size |
+| GENADOM\_CLASSIFY | Genomad v1.5.0 [ref17] | Plasmid and virus detection |
+| VIZ\_STAGE1‑4 | Custom R/Python scripts | Generates interim and final visualizations |
+| CHECKV\_QUALITY | CheckV v1.0.1 [ref16] | Estimates MAG completeness, contamination, and genome size |
 | MACSYFINDER | MacSyFinder v1.0.5 [ref15] | Detects defense systems |
 | DEFENSEFINDER | DefenseFinder v1.1.0 (Thomas et al., 2022) | Identifies anti‑phage defense loci |
-| ISLANDPATH_DIMOB | IslandPath-DIMOB v1.0 (Maiuri et al., 2019) | Predicts genomic islands |
-| Additional steps (RNA_CLASSIFY, etc.) | – | Supplementary analyses (tRNA, rRNA, etc.) |
+| ISLANDPATH\_DIMOB | IslandPath-DIMOB v1.0 (Maiuri et al., 2019) | Predicts genomic islands |
+| Additional steps (RNA\_CLASSIFY, etc.) | – | Supplementary analyses (tRNA, rRNA, etc.) |
 
 The pipeline generated a total of **3,293 contigs** with a cumulative length of **29.63 Mb**, an N50 of **13.8 kb**, and a largest contig of **179.7 kb**. Mean read coverage across the assembly was **13.7×**, and **58 contigs** were identified as circular (potential plasmids or complete genomes).
 
@@ -95,14 +95,14 @@ The pipeline generated a total of **3,293 contigs** with a cumulative length of 
 * **Module completeness scoring** – For each KEGG module, completeness was computed as  
 
 \[
-\text{Completeness}_m = \frac{\sum_{i\in m} \mathbf{1}\{ \text{KO}_i \text{ detected} \}}{|m|}
+$\text{Completeness}_m = \frac{\sum_{i\in m} \mathbf{1}\{ \text{KO}_i \text{ detected} \}}{|m|}$
 \]
 
-where \(\mathbf{1}\) is the indicator function and \(|m|\) the number of KOs defining module *m*. This yields a value between 0 and 1, reported as a proportion.  
+where \($\mathbf{1}$\) is the indicator function and \(|m|\) the number of KOs defining module *m*. This yields a value between 0 and 1, reported as a proportion.  
 * **Phylogenetic placement** – Taxonomic classification of contigs and MAGs was performed with TIARA (based on GTDB‑tk v2.1.0) (Neri et al., 2022); relative abundance of each taxon was inferred from read mapping coverage normalized to contig length (RPKM).  
-* **Visualization** – Circos plots, heatmaps, and bar graphs were generated in R v4.4.0 using the packages *ggplot2*, *ComplexHeatmap*, and *circlize* [ref11]; statistical differences between groups (if any) were assessed with Wilcoxon rank‑sum tests or PERMANOVA as appropriate, with *p*‑values adjusted for multiple testing using the Benjamini–Hochberg procedure.  All custom scripts and parameter files used in the nanopore_mag workflow are available in the project’s GitHub repository (https://github.com/username/nanopore_mag) [ref10].  ---  
+* **Visualization** – Circos plots, heatmaps, and bar graphs were generated in R v4.4.0 using the packages *ggplot2*, *ComplexHeatmap*, and *circlize* [ref11]; statistical differences between groups (if any) were assessed with Wilcoxon rank‑sum tests or PERMANOVA as appropriate, with *p*‑values adjusted for multiple testing using the Benjamini–Hochberg procedure.  All custom scripts and parameter files used in the nanopore\_mag workflow are available in the project’s GitHub repository (https://github.com/username/nanopore\_mag) [ref10].  ---  
 
-*Note: Where specific version numbers are not explicitly documented in the pipeline output, the versions listed above correspond to the default releases distributed with nanopore_mag v1.2.0 at the time of analysis (2023‑2024).*
+*Note: Where specific version numbers are not explicitly documented in the pipeline output, the versions listed above correspond to the default releases distributed with nanopore\_mag v1.2.0 at the time of analysis (2023‑2024).*
 
 ## Results
 
@@ -118,7 +118,7 @@ KOFAMSCAN annotation of the CDS set produced 157,370 total KO assignments, corre
 
 Mobile genetic element analysis detected 21 genomic islands within the assembly (Table 4).
 
-The annotation and functional profiling pipeline consisted of 40 sequential steps, including assembly (FLYE_ASSEMBLE, FLYE_FINISH), read mapping, taxonomic classification (TIARA_CLASSIFY, WHOKARYOTE_CLASSIFY, MARFERRET_CLASSIFY), binning (BIN_COMEBIN, BIN_SEMIBIN2, BIN_LORBIN, BIN_VAMB, BIN_MAXBIN2, BIN_METABAT2, DASTOOL_CONSENSUS, MAGSCOT_CONSENSUS), gene prediction and functional annotation (BAKTA_BASIC, BAKTA_EXTRA, EMAPPER, KOFAMSCAN, ANTISMASH, DBCAN, METAEUK_PREDICT), and downstream analyses (KEGG_DECODER, MINPATH, KEGG_MODULES, INTEGRONFINDER, GENOMAD_CLASSIFY, CHECKV_QUALITY, MACSYFINDER, DEFENSEFINDER, ISLANDPATH_DIMOB) (Table 5). Seven distinct binning algorithms were employed: COMEBIN, LORBIN, MAXBIN2, METABAT2, SEMIBIN2, VAMB, and MAGSCOT (Table 5).  
+The annotation and functional profiling pipeline consisted of 40 sequential steps, including assembly (FLYE\_ASSEMBLE, FLYE\_FINISH), read mapping, taxonomic classification (TIARA\_CLASSIFY, WHOKARYOTE\_CLASSIFY, MARFERRET\_CLASSIFY), binning (BIN\_COMEBIN, BIN\_SEMIBIN2, BIN\_LORBIN, BIN\_VAMB, BIN\_MAXBIN2, BIN\_METABAT2, DASTOOL\_CONSENSUS, MAGSCOT\_CONSENSUS), gene prediction and functional annotation (BAKTA\_BASIC, BAKTA\_EXTRA, EMAPPER, KOFAMSCAN, ANTISMASH, DBCAN, METAEUK\_PREDICT), and downstream analyses (KEGG\_DECODER, MINPATH, KEGG\_MODULES, INTEGRONFINDER, GENOMAD\_CLASSIFY, CHECKV\_QUALITY, MACSYFINDER, DEFENSEFINDER, ISLANDPATH\_DIMOB) (Table 5). Seven distinct binning algorithms were employed: COMEBIN, LORBIN, MAXBIN2, METABAT2, SEMIBIN2, VAMB, and MAGSCOT (Table 5).  
 
 All quantitative observations summarized above are presented in the referenced figures and tables. No biological interpretation is provided herein.
 
