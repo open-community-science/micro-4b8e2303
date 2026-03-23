@@ -1,0 +1,65 @@
+{
+  "accession": "PRJNA1248896",
+  "type": "BioProject",
+  "title": "Consesus analysis of marine viral diversity across techniques",
+  "description": "Consesus analysis of marine viral diversity across techniques: illumina, pacBio and nanopore",
+  "organism": "marine metagenome",
+  "organization": "UNIVERSITY OF ALICANTE",
+  "registration_date": "2025/04/10 00:00",
+  "project_scope": "Multispecies",
+  "num_sra_runs": 5,
+  "breakdown": [
+    {
+      "platform": "OXFORD_NANOPORE",
+      "instrument": "MinION",
+      "strategy": "WGS",
+      "source": "METAGENOMIC",
+      "layout": "SINGLE",
+      "runs": 3,
+      "samples": 3,
+      "bases": 2272764948,
+      "spots": 1769790,
+      "run_accessions": [
+        "SRR33094016",
+        "SRR33094017",
+        "SRR33094018"
+      ]
+    },
+    {
+      "platform": "ILLUMINA",
+      "instrument": "Illumina NovaSeq X",
+      "strategy": "AMPLICON",
+      "source": "METAGENOMIC",
+      "layout": "PAIRED",
+      "runs": 1,
+      "samples": 1,
+      "bases": 64374678867,
+      "spots": 247680510,
+      "run_accessions": [
+        "SRR33130620"
+      ]
+    },
+    {
+      "platform": "PACBIO_SMRT",
+      "instrument": "Sequel IIe",
+      "strategy": "AMPLICON",
+      "source": "METAGENOMIC",
+      "layout": "SINGLE",
+      "runs": 1,
+      "samples": 1,
+      "bases": 12119251337,
+      "spots": 2596537,
+      "run_accessions": [
+        "SRR33145182"
+      ]
+    }
+  ],
+  "num_samples": 5,
+  "library_strategy": "AMPLICON, WGS",
+  "platform": "ILLUMINA, OXFORD_NANOPORE, PACBIO_SMRT",
+  "library_source": "METAGENOMIC",
+  "library_layout": "PAIRED, SINGLE",
+  "instrument_model": "Illumina NovaSeq X, MinION, Sequel IIe",
+  "total_bases": 78766695152,
+  "total_spots": 252046837
+}
