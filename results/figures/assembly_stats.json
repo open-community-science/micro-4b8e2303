@@ -1,0 +1,38 @@
+{
+  "data": [
+    {
+      "type": "bar",
+      "x": [
+        "Total Contigs",
+        "Total Length (Mb)",
+        "N50 (kb)",
+        "Largest Contig (kb)"
+      ],
+      "y": [
+        3293,
+        29.63,
+        13.8,
+        179.7
+      ],
+      "marker": {
+        "color": "#9b59b6"
+      },
+      "text": [
+        "3293",
+        "29.63",
+        "13.8",
+        "179.7"
+      ],
+      "textposition": "auto"
+    }
+  ],
+  "layout": {
+    "title": "Assembly Statistics",
+    "yaxis": {
+      "title": "Value",
+      "type": "log"
+    },
+    "template": "plotly_white",
+    "height": 400
+  }
+}
