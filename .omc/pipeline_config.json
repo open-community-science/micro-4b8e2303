@@ -1,0 +1,7 @@
+{
+  "pipeline": "nanopore_mag",
+  "bioproject_accession": "PRJNA1248896",
+  "submission_slug": "4b8e2303",
+  "generated_at": "2026-03-23",
+  "platform": "open-community-science/omc-platform"
+}
